@@ -10,7 +10,7 @@ let typedLetters = ''; // String to store typed letters
 let matchedWords = 0; // Number of words matched
 let ongoingScore = 0; // Ongoing score (removed lastScore as it's not being used)
 let speedLevel = 1; // Speed level: 0 for slow, 1 for medium, 2 for fast
-const speeds = [0.5, 2, 2.3]; // Speed values for slow, medium, and fast
+const speeds = [0.5, 1, 2]; // Speed values for slow, medium, and fast
 const speedLabels = ['Slow', 'Medium', 'Fast'];
 
 let selectedTopic = 0; // Default topic index
