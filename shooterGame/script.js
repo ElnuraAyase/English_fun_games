@@ -3,17 +3,18 @@ const ctx = canvas.getContext('2d');
 const typingBlock = document.getElementById('typingBlock');
 const speedButton = document.getElementById('speedButton');
 const topicButton = document.getElementById('topicButton');
+const startButton = document.getElementById('startButton');
 
 let words = []; // Array to store falling words
 let typedLetters = ''; // String to store typed letters
 let matchedWords = 0; // Number of words matched
-let lastScore = 0; // Last score
-let ongoingScore = 0; // Ongoing score
+let ongoingScore = 0; // Ongoing score (removed lastScore as it's not being used)
 let speedLevel = 1; // Speed level: 0 for slow, 1 for medium, 2 for fast
-const speeds = [1, 3, 5]; // Speed values for slow, medium, and fast
-const speedLabels = ['Very Slow', 'Medium', 'A Bit Faster Than Medium'];
+const speeds = [0.5, 2, 2.3]; // Speed values for slow, medium, and fast
+const speedLabels = ['Slow', 'Medium', 'Fast'];
 
 let selectedTopic = 0; // Default topic index
+
 
 const topics = [
     {
@@ -70,31 +71,47 @@ function moveWords() {
 // Function to handle typing
 function handleTyping(event) {
     const typedLetter = event.key.toLowerCase();
+    
     if (event.key === 'Enter') {
         typedLetters = ''; // Clear typed letters when Enter key is pressed
+    } else if (event.key === 'Backspace') {
+        typedLetters = typedLetters.slice(0, -1); // Remove last character when Backspace key is pressed
     } else {
         typedLetters += typedLetter;
-    }
-    drawShooter(); // Redraw the shooter with updated typed letters
-    // Check if any word matches the typed letters
-    words.forEach((word, index) => {
-        if (typedLetters === word.text.substr(0, typedLetters.length)) {
+        let wordMatched = false; // Flag to track if a word has been matched
+        // Check if any word matches the typed letters
+        words.forEach((word, index) => {
             if (typedLetters === word.text) {
                 words.splice(index, 1); // Remove the matched word
                 matchedWords++; // Increment matched words count
-                // Implement scoring logic here
+                ongoingScore++; // Increment ongoing score
+                typedLetters = ''; // Clear typed letters
+                wordMatched = true; // Set flag to true
             }
-            // Update word color to indicate matching
-            word.color = 'yellow';
-        } else {
-            // Reset word color if not matching
-            word.color = 'white';
+        });
+        if (wordMatched) {
+            // Change color of matched word to yellow
+            words.forEach(word => {
+                if (word.color === 'yellow') {
+                    word.color = 'white'; // Reset color of previously matched word to white
+                }
+            });
         }
-    });
+    }
 }
+
+// Function to start a new game
+function startGame() {
+    gameRunning = true;
+    gameLoop(); // Start the game loop
+}
+
+// Event listener for start game button
+startButton.addEventListener('click', startGame);
 
 // Function to update the game state
 function update() {
+    if (!gameRunning) return; // Exit if game is not running
     if (Math.random() < 0.01) { // Adjust the frequency of word generation
         words.push(generateWord());
     }
@@ -103,37 +120,32 @@ function update() {
 
 // Function to render the game
 function render() {
+    if (!gameRunning) return; // Exit if game is not running
     drawWords();
-    drawShooter();
+    drawShooter(); // You need to implement this function for the shooter to appear
     // Draw top text
     ctx.fillStyle = 'white';
     ctx.font = '16px Arial';
-    ctx.fillText("Last Score: " + lastScore, 10, 20);
-    ctx.fillText("Ongoing Score: " + ongoingScore, 10, 40);
-    ctx.fillText("Matched Words: " + matchedWords, 10, 60);
+    ctx.fillText("Ongoing Score: " + ongoingScore, 10, 20); // Adjusted position for the score
+    ctx.fillText("Matched Words: " + matchedWords, 10, 40); // Adjusted position for the matched words count
 }
 
 // Main game loop
 function gameLoop() {
+    if (!gameRunning) return; // Exit if game is not running
     update();
     render();
     requestAnimationFrame(gameLoop);
 }
-
-// Start the game loop
-gameLoop();
 
 // Event listener for typing
 window.addEventListener('keydown', handleTyping);
 
 // Event listener for speed change button
 speedButton.addEventListener('click', () => {
+    if (!gameRunning) return; // Exit if game is not running
     speedLevel = (speedLevel + 1) % speeds.length; // Cycle through speed levels
     speedButton.textContent = `Change Speed (${speedLabels[speedLevel]})`;
 });
 
-// Event listener for topic change button
-topicButton.addEventListener('click', () => {
-    selectedTopic = (selectedTopic + 1) % topics.length; // Cycle through topics
-    topicButton.textContent = `Change Topic (${topics[selectedTopic].name})`;
-});
+
