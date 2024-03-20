@@ -1,1 +1,22 @@
 
+import random
+
+def choose_word():
+    words = ["apple", "banana", "orange", "grape", "pineapple", "strawberry"]
+    return random.choice(words)
+
+def display_word(word, guessed_letters):
+    displayed_word = ""
+    for letter in word:
+        if letter in guessed_letters:
+            displayed_word += letter + " "
+        else:
+            displayed_word += "_ "
+    return displayed_word.strip()
+
+def main():
+    word_to_guess = choose_word()
+    guessed_letters = []
+    attempts = 6
+
+   
