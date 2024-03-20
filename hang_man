@@ -37,5 +37,14 @@ def main():
             if set(word_to_guess) == set(guessed_letters):
                 print("Congratulations! You guessed the word:", word_to_guess)
                 break
+        else:
+            guessed_letters.append(guess)
+            attempts -= 1
+            print("Incorrect guess!")
 
+    if attempts == 0:
+        print("You're out of attempts! The word was:", word_to_guess)
+
+if __name__ == "__main__":
+    main()
    
