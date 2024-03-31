@@ -12,4 +12,11 @@ Copy code
 <h1>English Plurals Test</h1>
 
 <form id="plurals_test" action="submit_answers.php" method="post">
+  <div>
+    <p>1. What is the plural of "child"?</p>
+    <input type="radio" name="q1" value="a"> child
+    <input type="radio" name="q1" value="b"> childs
+    <input type="radio" name="q1" value="c"> children
+    <input type="radio" name="q1" value="d"> childes
+</div>
 
