@@ -27,3 +27,9 @@ Copy code
     <input type="radio" name="q2" value="c"> gooses
     <input type="radio" name="q2" value="d"> gese
 </div>
+<input type="submit" value="Submit Answers">
+
+</form>
+
+</body>
+</html>
