@@ -20,3 +20,10 @@ Copy code
     <input type="radio" name="q1" value="d"> childes
 </div>
 
+<div>
+    <p>2. Which of the following is the correct plural of "goose"?</p>
+    <input type="radio" name="q2" value="a"> goos
+    <input type="radio" name="q2" value="b"> geese
+    <input type="radio" name="q2" value="c"> gooses
+    <input type="radio" name="q2" value="d"> gese
+</div>
